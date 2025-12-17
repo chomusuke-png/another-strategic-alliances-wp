@@ -3,7 +3,7 @@
  * Plugin Name: Another Strategic Alliances
  * Description: Crea widgets Grids y Sliders mediante Custom Post Types.
  * Version: 4.0.0
- * Author: Tu Nombre
+ * Author: Zumito
  * Text Domain: another-sa
  */
 
