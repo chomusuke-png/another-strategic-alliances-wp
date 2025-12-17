@@ -1,97 +1,26 @@
 /* Contenedor Principal */
 .another-repeater-wrapper {
-    max-width: 600px; /* Limitamos ancho para legibilidad */
+    /* Quitamos max-width para que se adapte al Metabox */
+    width: 100%; 
     background: #fff;
-    border: 1px solid #ccd0d4;
-    padding: 15px;
-    border-radius: 4px;
+    /* Quitamos padding y borde extra, ya que el metabox ya lo tiene */
 }
 
-.another-repeater-list {
-    margin-top: 15px;
-    padding: 0;
+/* El resto queda igual, solo aseguramos que el input de título ocupe todo */
+.title-field, .url-field {
+    width: 100%;
 }
 
-/* Tarjeta individual */
-.another-repeater-item {
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 15px;
-    margin-bottom: 10px;
-    position: relative;
-    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
-}
-
-.another-repeater-item:hover {
-    border-color: #999;
-    background: #fff;
-}
-
-/* Filas y Columnas Flex */
-.repeater-row {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 10px;
-}
-
-.repeater-col {
-    flex: 1;
-}
-
-.media-row {
-    border-top: 1px dashed #ddd;
-    padding-top: 10px;
-    margin-top: 10px;
-    display: block; /* Imagen ocupa ancho completo relativo */
-}
-
-/* Labels */
-.field-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 5px;
-    font-size: 12px;
-    text-transform: uppercase;
-    color: #555;
-}
-
-/* Imagen Previa */
-.repeater-image-preview {
-    max-width: 150px;
-    max-height: 80px;
-    display: block;
-    margin: 5px 0 10px;
-    background: #fff;
-    padding: 4px;
-    border: 1px solid #ccc;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-
-/* Acciones (Footer de la tarjeta) */
-.repeater-actions {
-    background: #eee;
-    margin: 15px -15px -15px; /* Expandir a los bordes */
-    padding: 8px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #ddd;
-}
-
-.drag-handle {
-    cursor: move;
-    color: #999;
-    font-size: 20px;
-}
-.drag-handle:hover {
-    color: #333;
-}
-
-/* Placeholder al arrastrar */
-.ui-sortable-placeholder {
-    border: 1px dashed #b4b9be;
-    background: #fff;
-    height: 50px;
-    margin-bottom: 10px;
-}
+/* ... Mantener el resto de estilos anteriores ... */
+.another-repeater-list { margin-top: 15px; padding: 0; }
+.another-repeater-item { background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 15px; margin-bottom: 10px; position: relative; box-shadow: 0 1px 1px rgba(0,0,0,0.04); }
+.another-repeater-item:hover { border-color: #999; background: #fff; }
+.repeater-row { display: flex; gap: 15px; margin-bottom: 10px; }
+.repeater-col { flex: 1; }
+.media-row { border-top: 1px dashed #ddd; padding-top: 10px; margin-top: 10px; display: block; }
+.field-label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 12px; text-transform: uppercase; color: #555; }
+.repeater-image-preview { max-width: 150px; max-height: 80px; display: block; margin: 5px 0 10px; background: #fff; padding: 4px; border: 1px solid #ccc; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+.repeater-actions { background: #eee; margin: 15px -15px -15px; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; }
+.drag-handle { cursor: move; color: #999; font-size: 20px; }
+.drag-handle:hover { color: #333; }
+.ui-sortable-placeholder { border: 1px dashed #b4b9be; background: #fff; height: 50px; margin-bottom: 10px; }
