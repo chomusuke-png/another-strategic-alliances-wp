@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Another Strategic Alliances
- * Description: Crea widgets ilimitados de Aliados y Marcas (Grids o Sliders) mediante Custom Post Types.
+ * Description: Crea widgets Grids y Sliders mediante Custom Post Types.
  * Version: 4.0.0
  * Author: Tu Nombre
  * Text Domain: another-sa
