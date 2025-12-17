@@ -5,12 +5,10 @@ class Another_SA_CPT {
         add_action('init', [__CLASS__, 'register_cpt']);
         add_action('add_meta_boxes', [__CLASS__, 'add_meta_boxes']);
         add_action('save_post', [__CLASS__, 'save_meta_data']);
-        // Columnas personalizadas en el listado del admin
         add_filter('manage_another_widget_posts_columns', [__CLASS__, 'custom_columns']);
         add_action('manage_another_widget_posts_custom_column', [__CLASS__, 'custom_columns_content'], 10, 2);
     }
 
-    // 1. Registrar Custom Post Type
     public static function register_cpt() {
         register_post_type('another_widget', [
             'labels' => [
@@ -23,55 +21,27 @@ class Another_SA_CPT {
                 'all_items'          => 'Todos los Widgets',
                 'menu_name'          => 'Widgets de Logos'
             ],
-            'public'             => false,  // No accesible públicamente por URL
-            'show_ui'            => true,   // Mostrar en admin
+            'public'             => false,
+            'show_ui'            => true,
             'show_in_menu'       => true,
             'menu_icon'          => 'dashicons-images-alt2',
-            'supports'           => ['title'], // Solo usamos el título nativo
+            'supports'           => ['title'],
             'capability_type'    => 'post',
         ]);
     }
 
-    // 2. Añadir Meta Boxes
     public static function add_meta_boxes() {
-        // Caja de Configuración (Lateral)
-        add_meta_box(
-            'another_sa_settings_box',
-            'Configuración del Widget',
-            [__CLASS__, 'render_settings_box'],
-            'another_widget',
-            'side',
-            'high'
-        );
-
-        // Caja del Repetidor (Principal)
-        add_meta_box(
-            'another_sa_items_box',
-            'Logos / Elementos',
-            [__CLASS__, 'render_items_box'],
-            'another_widget',
-            'normal',
-            'high'
-        );
-
-        // Caja informativa de Shortcode
-        add_meta_box(
-            'another_sa_shortcode_box',
-            'Shortcode',
-            [__CLASS__, 'render_shortcode_box'],
-            'another_widget',
-            'side',
-            'low'
-        );
+        add_meta_box('another_sa_settings_box', 'Configuración del Widget', [__CLASS__, 'render_settings_box'], 'another_widget', 'side', 'high');
+        add_meta_box('another_sa_items_box', 'Logos / Elementos', [__CLASS__, 'render_items_box'], 'another_widget', 'normal', 'high');
+        add_meta_box('another_sa_shortcode_box', 'Shortcode', [__CLASS__, 'render_shortcode_box'], 'another_widget', 'side', 'low');
     }
 
-    // Render: Configuración (Tipo y Color)
+    // --- MODIFICADO: Añadido Checkbox "Mostrar Nombres" ---
     public static function render_settings_box($post) {
-        // Recuperar valores
         $layout = get_post_meta($post->ID, '_another_layout', true) ?: 'slider';
         $color  = get_post_meta($post->ID, '_another_title_color', true) ?: '#947e1e';
+        $show_names = get_post_meta($post->ID, '_another_show_names', true); // Recuperamos valor
         
-        // Nonce de seguridad
         wp_nonce_field('another_sa_save_action', 'another_sa_nonce');
         ?>
         <p>
@@ -83,13 +53,21 @@ class Another_SA_CPT {
         </p>
         <hr>
         <p>
+            <label>
+                <input type="checkbox" name="another_show_names" value="1" <?php checked($show_names, '1'); ?>>
+                <strong>Mostrar Nombres de Items</strong>
+            </label>
+            <br>
+            <small style="color:#666;">Si marcas esto, aparecerá el nombre debajo del logo.</small>
+        </p>
+        <hr>
+        <p>
             <label><strong>Color del Título:</strong></label><br>
             <input type="text" name="another_title_color" value="<?php echo esc_attr($color); ?>" class="another-color-field" data-default-color="#947e1e" />
         </p>
         <?php
     }
 
-    // Render: Repetidor de Items
     public static function render_items_box($post) {
         $json_value = get_post_meta($post->ID, '_another_items', true);
         $items = !empty($json_value) ? json_decode($json_value, true) : [];
@@ -99,7 +77,6 @@ class Another_SA_CPT {
             <button type="button" class="button button-primary add-repeater-item">
                 <span class="dashicons dashicons-plus"></span> Añadir Logo
             </button>
-
             <ul class="another-repeater-list">
                 <?php foreach ($items as $item): ?>
                     <li class="another-repeater-item">
@@ -140,43 +117,39 @@ class Another_SA_CPT {
         <?php
     }
 
-    // Render: Shortcode Helper
     public static function render_shortcode_box($post) {
         ?>
-        <p>Copia y pega este shortcode donde quieras mostrar este widget:</p>
+        <p>Copia y pega este shortcode:</p>
         <code style="display:block; padding:10px; background:#f0f0f1; border:1px solid #ccc;">
             [another_widget id="<?php echo $post->ID; ?>"]
         </code>
         <?php
     }
 
-    // 3. Guardar Datos
     public static function save_meta_data($post_id) {
-        // Verificar nonce y permisos
         if (!isset($_POST['another_sa_nonce']) || !wp_verify_nonce($_POST['another_sa_nonce'], 'another_sa_save_action')) return;
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
         if (!current_user_can('edit_post', $post_id)) return;
 
-        // Guardar Layout
         if (isset($_POST['another_layout'])) {
             update_post_meta($post_id, '_another_layout', sanitize_key($_POST['another_layout']));
         }
         
-        // Guardar Color
         if (isset($_POST['another_title_color'])) {
             update_post_meta($post_id, '_another_title_color', sanitize_hex_color($_POST['another_title_color']));
         }
 
-        // Guardar Items (JSON)
-        // Nota: wp_kses_post_deep permite HTML seguro, json_encode escapa lo necesario
+        // --- MODIFICADO: Guardar Checkbox ---
+        // Si el checkbox está marcado, viene en POST. Si no, no viene, así que guardamos '0' o vacío.
+        $show_names = isset($_POST['another_show_names']) ? '1' : '';
+        update_post_meta($post_id, '_another_show_names', $show_names);
+
         if (isset($_POST['another_items'])) {
-            // Decodificamos y volvemos a codificar para limpiar
             $json = wp_unslash($_POST['another_items']);
             update_post_meta($post_id, '_another_items', $json);
         }
     }
 
-    // 4. Columnas Admin
     public static function custom_columns($columns) {
         $columns['shortcode'] = 'Shortcode';
         $columns['layout'] = 'Tipo';

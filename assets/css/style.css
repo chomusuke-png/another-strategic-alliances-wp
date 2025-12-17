@@ -1,5 +1,5 @@
 /* ==================== */
-/*       GENERAL        */
+/* GENERAL        */
 /* ==================== */
 .another-section-title {
     text-align: center;
@@ -17,21 +17,43 @@
     padding: 0 20px;
 }
 
+/* ============================ */
+/* ESTILOS DE NOMBRE DEL ITEM   */
+/* ============================ */
+.another-item-name {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #444;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Clases auxiliares cuando hay nombres activos */
+.partner-logo.has-names,
+.another-brand-item.has-names {
+    flex-direction: column; /* Apila imagen y texto */
+    text-align: center;
+}
+
 /* ==================== */
 /* SECCIÓN ALIADOS (SLIDER) */
 /* ==================== */
 .another-partners-section {
     padding: 50px 0;
     background-color: #ffffff;
-    /* border-bottom: 1px solid #eee; */ /* Opcional */
 }
 
 .another-partners-slider .swiper-slide {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 140px; 
+    /* Si mostramos nombres, el slide necesita altura flexible o mayor */
+    height: auto; 
+    min-height: 140px; 
     transition: transform 0.3s ease;
+    padding: 10px 0; /* Un poco de aire arriba/abajo */
 }
 
 .another-partners-slider img {
@@ -41,6 +63,8 @@
     height: auto;
     transition: all 0.3s ease;
     object-fit: contain;
+    display: block; /* Fix para alineación */
+    margin: 0 auto;
 }
 
 .another-partners-slider img:hover {
@@ -57,9 +81,9 @@
 
 .another-brands-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Un poco más ancho por el texto */
     gap: 20px;
-    align-items: center;
+    align-items: start; /* Alineación superior para que los textos cuadren */
     justify-content: center;
     margin-top: 30px;
 }
@@ -82,6 +106,8 @@
     width: auto;
     transition: all 0.3s ease;
     object-fit: contain;
+    display: block;
+    margin: 0 auto;
 }
 
 /* Responsive */
